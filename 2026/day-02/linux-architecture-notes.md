@@ -21,13 +21,20 @@ Programs and tools (like ls, cp, grep) that perform specific tasks, managing fil
 
 Processes are instances of running programs. For ex. if you do pin ww.google.com then ping process is created.
 You can list processes using ps(ps ax, ps ef) or top commands. 
-## Process states
-- running : Active process.
-- sleeping : Idle process.
-- Stopped : Process suspended by signal SIGSTOP (Ctrl+Z, Ctrl+C). It can be resumed by a SIGCONT signal.
-- Zombie : The process has terminated, but its entry in the process table still exists because its parent process has not 
-           yet read its exit status.
 
+# Process Management & Lifecycle
+In Linux, a process doesn't just "appear." It is born from a parent.
+
+**- Process Creation**
+- New processes are created using the fork() system call, which duplicates the parent process.
+- The child process can then execute a new program using exec().
+- Each process has a unique PID (Process ID).
+
+**Process States (The "Vitals")**
+When you run top or ps, you’ll see these status codes:
+
+
+<img width="881" height="430" alt="image" src="https://github.com/user-attachments/assets/c07dc3db-c9ef-4d9c-bedf-0936f4f0b3b8" />
 
 
 ## Process & Process Manegement 
@@ -62,7 +69,30 @@ You can list processes using ps(ps ax, ps ef) or top commands.
     - `journalctl -u ssh : it will used to see a logs of systemd processes`
 
 
+**3. What is systemd and Why It Matters?**
+Before systemd, Linux used "Init scripts" which started services one-by-one (very slow). Systemd changed the game for DevOps:
 
+**Parallelism:** It starts services at the same time, making boot-up incredibly fast.
+
+**Service Recovery:** If your web server crashes at 3:00 AM, systemd can detect it and restart it automatically.
+
+**Dependency Logic:** It ensures the Network is active before trying to start the Database.
+
+**Standardization:** Whether you use Ubuntu, CentOS, or Debian, the commands to manage services are now the same (systemctl).
+
+**4. 5 Essential Commands for Daily Use**
+top (or htop): The "Task Manager" of Linux. Shows CPU/RAM and process states.
+
+ps aux: Shows a detailed list of every process running on the system right now.
+
+systemctl status <service>: Tells you if a service is active, failed, or stopped.
+
+kill -9 <PID>: The "Nuclear Option." Force-stops a process that won't close normally.
+
+journalctl -u <service> -f: Follows the live logs of a specific service (essential for debugging).
+
+**Why this matters for DevOps:**
+If a deployment fails, you don't just "restart the computer." You check the Process State to see if it's a Zombie, use journalctl to see why the service failed, and use systemd to ensure it restarts automatically next time.
 
 --- 
 
