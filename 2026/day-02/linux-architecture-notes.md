@@ -28,35 +28,34 @@ You can list processes using ps(ps ax, ps ef) or top commands.
 - Zombie : The process has terminated, but its entry in the process table still exists because its parent process has not 
            yet read its exit status.
 
-Processes
-A process is a running program
+Process & Process Manegement
+Everything in linux is processes ,even a cmd executed by user is process .
+a cmd enter by user on shell
+shell  calls forks() & created a child process
+child process calls exec()
+kernel schedule it for execution
+Some of process states as follow
+Running : process is running on cpu
+Sleeping : waiting for i/o
+Zombie : process is finished but not cleaned
+Some of important commands for process manegement are as follow
+top: its shows all process used to monitor & troubleshoot
+htop: you can horizontally & vertically scroll all process
+ps -a : is used to display all process 
+kill -9 PID: forcefully terminate a process
 
-A new process is created when a program starts another program
+Systemd/init Process
+It is a first process lanuched by kernal ,its pid is always 1
+It is responsible for starting system service
+Some of the imp commands of systemd as follow
+systemctl status ssh: it will show ssh service status 
+systemctl start ssh: it will start ssh service
+systemctl stop ssh: it will stop ssh service
+systemctl enable ssh: it will start ssh service automatically after server boot
+systemctl restart ssh : it will restart ssh service
+systemctl list-units : it will show all active units loaded in systemd
+journalctl -u ssh : it will used to see a logs of systemd processes
 
-Each process has:
-
-Its own memory
-Its own Process ID (PID)
-Example
-ls
-What happens:
-
-The shell starts a new process for ls
-The OS decides when it uses the CPU
-ls finishes execution
-Memory is freed
-The shell keeps running
-Process States
-Running
-Process is using the CPU or ready to use it
-Sleeping
-Process is waiting for something (input, disk, network)
-This is normal behavior
-Zombie
-Process has finished execution
-Parent process has not cleaned it up yet
-ps aux | grep Z
-Zombie processes do not use CPU or memory, but too many are harmful.
 
 # 5 Commands used daily 
 - ps or top : Provides process ID, memory usage, CPU time and command name which is crucial for monitoring system performance
